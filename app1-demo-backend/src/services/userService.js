@@ -26,8 +26,9 @@ export function getUserProfileById(userId) {
   // Accessing nested properties on `user.preferences` without validating if `preferences` or `displaySettings` exists.
   // For user 'u101', `user.preferences` is null, causing:
   // TypeError: Cannot read properties of undefined (reading 'theme')
-  const theme = user.preferences.displaySettings.theme.toUpperCase();
-  const fontSize = user.preferences.displaySettings.fontSize;
+  // HEALED BY AI ASSISTANT: Added safe optional chaining and fallback for missing preferences
+  const theme = (user.preferences?.displaySettings?.theme || 'default').toUpperCase();
+  const fontSize = user.preferences?.displaySettings?.fontSize || 14;
 
   return {
     id: user.id,

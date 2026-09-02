@@ -1,0 +1,17 @@
+{
+  "name": "app1-demo-backend",
+  "version": "1.0.0",
+  "description": "Demo Backend Application containing domain REST APIs with intentional runtime bugs for AI Self-Healing Assistant",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "winston": "^3.13.0"
+  }
+}

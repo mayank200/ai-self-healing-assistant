@@ -1,0 +1,23 @@
+[
+  {
+    "id": "p200",
+    "name": "Wireless Noise-Canceling Headphones",
+    "price": 199.99,
+    "tags": ["electronics", "audio"],
+    "rawMetadata": "{\"brand\": \"AudioTech\", \"inStock\": true}"
+  },
+  {
+    "id": "p201",
+    "name": "Ergonomic Mechanical Keyboard",
+    "price": 129.50,
+    "tags": ["electronics", "peripherals"],
+    "rawMetadata": "{\"brand\": \"KeyMaster\", \"switches\": \"tactile\"}"
+  },
+  {
+    "id": "p202",
+    "name": "Smart Fitness Watch",
+    "price": 89.99,
+    "tags": ["electronics", "wearable"],
+    "rawMetadata": "{brand: SmartGear, status: invalid_json_quote_missing}"
+  }
+]

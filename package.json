@@ -1,0 +1,23 @@
+{
+  "name": "ai-self-healing-assistant-system",
+  "version": "1.0.0",
+  "description": "Production-ready AI-Powered Self-Healing Developer Assistant System",
+  "private": true,
+  "scripts": {
+    "start:app1": "npm --prefix app1-demo-backend start",
+    "start:app2": "npm --prefix app2-self-healing-assistant start",
+    "install:all": "npm install --prefix app1-demo-backend && npm install --prefix app2-self-healing-assistant",
+    "test:demo": "node scripts/demo-runner.js"
+  },
+  "keywords": [
+    "ai",
+    "self-healing",
+    "express",
+    "nodejs",
+    "automation",
+    "github-pr",
+    "gemini"
+  ],
+  "author": "",
+  "license": "MIT"
+}

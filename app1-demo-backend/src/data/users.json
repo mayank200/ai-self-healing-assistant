@@ -1,0 +1,33 @@
+[
+  {
+    "id": "u100",
+    "name": "Sarah Connor",
+    "email": "sarah@example.com",
+    "role": "ADMIN",
+    "preferences": {
+      "displaySettings": {
+        "theme": "dark",
+        "fontSize": 14
+      }
+    }
+  },
+  {
+    "id": "u101",
+    "name": "Alice Smith",
+    "email": "alice@example.com",
+    "role": "USER",
+    "preferences": null
+  },
+  {
+    "id": "u102",
+    "name": "Bob Vance",
+    "email": "bob@example.com",
+    "role": "USER",
+    "preferences": {
+      "displaySettings": {
+        "theme": "light",
+        "fontSize": 12
+      }
+    }
+  }
+]

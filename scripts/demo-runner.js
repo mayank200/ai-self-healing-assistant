@@ -1,7 +1,6 @@
 import { spawn } from "child_process";
 import http from "http";
 import path from "path";
-import fs from "fs";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -42,9 +41,9 @@ async function runDemo() {
     "=============================================================\n",
   );
 
-  // 1. Start Application 1 (Backend)
+  // 1. Start Application 1 (Backend with --watch mode)
   console.log("[Demo Runner] Starting Application 1 (Demo Backend Express)...");
-  const app1Process = spawn("node", ["src/server.js"], {
+  const app1Process = spawn("node", ["--watch", "src/server.js"], {
     cwd: path.join(rootDir, "app1-demo-backend"),
     stdio: "pipe",
     shell: true,
@@ -74,7 +73,7 @@ async function runDemo() {
     console.error(`[App 2 STDERR] ${data.toString().trim()}`),
   );
 
-  await sleep(4000);
+  await sleep(3000);
 
   try {
     // 3. Trigger Buggy Endpoint
@@ -92,8 +91,8 @@ async function runDemo() {
     );
 
     const res1 = await makeRequest({
-      hostname: "localhost",
-      port: 4000,
+      hostname: "127.0.0.1",
+      port: 3000,
       path: "/api/users/u101/profile",
       method: "GET",
     });
@@ -110,11 +109,11 @@ async function runDemo() {
       );
     }
 
-    // 4. Wait for Assistant to detect, fix, commit, and create PR
+    // 4. Wait for Assistant to detect, fix, commit, push to GitHub, and create PR
     console.log(
-      "\n⏳ Waiting 5 seconds for App 2 AI Assistant to detect log, apply fix, commit, and raise PR...",
+      "\n⏳ Waiting 8 seconds for App 2 AI Assistant to detect log, apply fix, commit, push to GitHub, and raise PR...",
     );
-    await sleep(5000);
+    await sleep(8000);
 
     // 5. Re-Test Endpoint after Healing
     console.log(
@@ -128,8 +127,8 @@ async function runDemo() {
     );
 
     const res2 = await makeRequest({
-      hostname: "localhost",
-      port: 4000,
+      hostname: "127.0.0.1",
+      port: 3000,
       path: "/api/users/u101/profile",
       method: "GET",
     });

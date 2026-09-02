@@ -1,0 +1,11 @@
+{
+  "prNumber": 778,
+  "prUrl": "https://github.com/dev-team/ai-self-healing-assistant/pull/778",
+  "title": "fix(user-service): add safe optional chaining for user preferences",
+  "headBranch": "fix/self-heal-userService-1788329515034",
+  "baseBranch": "main",
+  "body": "## AI Self-Healing Summary\n### Root Cause\nAttempted to access `user.preferences.displaySettings.theme` on a user object where `preferences` is `null`, triggering a `TypeError: Cannot read properties of undefined (reading 'theme')`.\n\n### Fix Applied\n- Added safe optional chaining (`user.preferences?.displaySettings?.theme`).\n- Provided default fallback values (`'default'` theme and `14` font size).\n\n### Verification\nTarget endpoint `GET /api/users/u101/profile` now successfully returns HTTP 200 OK with valid JSON response.",
+  "createdTimestamp": "2026-09-02T06:11:55.241Z",
+  "status": "OPEN",
+  "simulationMode": true
+}

@@ -21,17 +21,17 @@ sequenceDiagram
     Note over App1: Throws TypeError (null property access)
     App1-->>Client: 500 Internal Server Error
     App1->>Log: Appends structured error JSON & stack trace
-    
+
     Log->>App2: Real-time file stream change detected (Chokidar)
     Note over App2: 1. Parse stack trace -> Identify src/services/userService.js:24
     Note over App2: 2. Read target source code & surrounding context
     App2->>LLM: Prompt AI with error details & file source code
     LLM-->>App2: Returns JSON fix (root cause, fixed code, PR title & body)
-    
+
     Note over App2: 3. Apply code patch & validate JS syntax
     App2->>Git: Create branch fix/self-heal-user-service-* & commit fix
     App2->>GitHub: Create Pull Request (Live Octokit API or Dry-Run)
-    
+
     Client->>App1: GET /api/users/u101/profile (Re-test)
     App1-->>Client: 200 OK with full intended JSON data!
 ```
@@ -45,7 +45,7 @@ ai-self-healing-assistant/
 ├── app1-demo-backend/                   # Application 1: Demo Backend Express API
 │   ├── src/
 │   │   ├── app.js                       # Express app setup & error handling middleware
-│   │   ├── server.js                    # Server listener entry point (Port 3000)
+│   │   ├── server.js                    # Server listener entry point (Port 4000)
 │   │   ├── logger.js                    # Winston logger streaming JSON errors to file
 │   │   ├── data/                        # Mock data stores (users.json, products.json)
 │   │   ├── routes/                      # Domain API routes (users, orders, products)
@@ -87,7 +87,8 @@ ai-self-healing-assistant/
 ## ⚡ Functional Domain APIs & Real-World Bug Scenarios
 
 ### 1. User Profile API (`GET /api/users/:id/profile`)
-- **Initial Request**: `GET http://localhost:3000/api/users/u101/profile`
+
+- **Initial Request**: `GET http://localhost:4000/api/users/u101/profile`
 - **Bug Scenario**: User `u101` has `preferences: null` in database JSON. The code attempts `user.preferences.displaySettings.theme.toUpperCase()`, throwing `TypeError: Cannot read properties of undefined (reading 'theme')`.
 - **Healed Response**: Returns `200 OK` with full user profile JSON:
   ```json
@@ -105,12 +106,14 @@ ai-self-healing-assistant/
   ```
 
 ### 2. Order Total Calculation API (`POST /api/orders/calculate`)
-- **Initial Request**: `POST http://localhost:3000/api/orders/calculate` with `{ discountRate: 1.0 }`
+
+- **Initial Request**: `POST http://localhost:4000/api/orders/calculate` with `{ discountRate: 1.0 }`
 - **Bug Scenario**: Code calculates divisor `(1.0 - discountRate)` resulting in division by zero.
 - **Healed Response**: Returns `200 OK` with `{ subtotal: 100, discount: 100, tax: 0, total: 0, currency: "USD" }`.
 
 ### 3. Product Catalog Search (`GET /api/products/search`)
-- **Initial Request**: `GET http://localhost:3000/api/products/search?tag=electronics`
+
+- **Initial Request**: `GET http://localhost:4000/api/products/search?tag=electronics`
 - **Bug Scenario**: Product `p202` has unquoted raw metadata JSON string, causing `JSON.parse` to throw `SyntaxError`.
 - **Healed Response**: Returns `200 OK` with product search array.
 
@@ -119,15 +122,19 @@ ai-self-healing-assistant/
 ## 🛠️ Setup & Installation Instructions
 
 ### Prerequisites
+
 - **Node.js**: v18.0.0 or higher
 - **Git**: Installed and available in PATH
 
 ### Step 1: Install Dependencies
+
 From the repository root directory, run:
+
 ```bash
 npm run install:all
 ```
-*(This installs dependencies for both `app1-demo-backend` and `app2-self-healing-assistant`).*
+
+_(This installs dependencies for both `app1-demo-backend` and `app2-self-healing-assistant`)._
 
 ---
 
@@ -136,40 +143,46 @@ npm run install:all
 ### Option A: Running Manually (Two Terminals)
 
 1. **Terminal 1: Start Application 1 (Backend)**:
+
    ```bash
    npm run start:app1
    ```
-   *Server starts at `http://localhost:3000`.*
+
+   _Server starts at `http://localhost:4000`._
 
 2. **Terminal 2: Start Application 2 (Self-Healing Assistant)**:
+
    ```bash
    npm run start:app2
    ```
-   *Assistant starts monitoring `app1-demo-backend/logs/error.log`.*
+
+   _Assistant starts monitoring `app1-demo-backend/logs/error.log`._
 
 3. **Trigger Bug & Observe Healing**:
    Open a browser or run cURL/Postman:
    ```bash
-   curl http://localhost:3000/api/users/u101/profile
+   curl http://localhost:4000/api/users/u101/profile
    ```
+
    - Terminal 1 outputs HTTP 500 error & appends to `error.log`.
    - Terminal 2 detects the error log, extracts stack trace, prompts AI, patches `src/services/userService.js`, creates git branch `fix/self-heal-user-service-...`, commits changes, and raises Pull Request!
-   
 4. **Re-Test Endpoint**:
    Run the cURL command again:
    ```bash
-   curl http://localhost:3000/api/users/u101/profile
+   curl http://localhost:4000/api/users/u101/profile
    ```
-   *Returns `200 OK` with valid user profile JSON!*
+   _Returns `200 OK` with valid user profile JSON!_
 
 ---
 
 ### Option B: Automated One-Command Demo
 
 Run the end-to-end automated verification runner:
+
 ```bash
 npm run test:demo
 ```
+
 This script automatically boots both services, fires a request to the buggy endpoint, verifies the initial HTTP 500 failure, waits for the Assistant to auto-heal the code, and verifies that the post-healing endpoint returns HTTP 200 OK with valid JSON!
 
 ---
@@ -179,6 +192,7 @@ This script automatically boots both services, fires a request to the buggy endp
 The assistant supports full integration with **Google Gemini 2.5 Flash API** and **GitHub Octokit REST API**.
 
 Create a `.env` file in `app2-self-healing-assistant/`:
+
 ```env
 # AI Model Key (Gemini API)
 GEMINI_API_KEY=your_gemini_api_key_here

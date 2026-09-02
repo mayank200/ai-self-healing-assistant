@@ -83,11 +83,11 @@ async function startScreencast() {
   );
 
   console.log(
-    "\n[2/5] Triggering Buggy Endpoint: GET http://127.0.0.1:4000/api/users/u101/profile...\n",
+    "\n[2/5] Triggering Buggy Endpoint: GET http://127.0.0.1:3000/api/users/u101/profile...\n",
   );
   const res1 = await makeRequest({
     hostname: "127.0.0.1",
-    port: 4000,
+    port: 3000,
     path: "/api/users/u101/profile",
     method: "GET",
   });
@@ -111,11 +111,11 @@ async function startScreencast() {
   );
 
   console.log(
-    "\n[4/5] Re-testing Endpoint: GET http://127.0.0.1:4000/api/users/u101/profile...\n",
+    "\n[4/5] Re-testing Endpoint: GET http://127.0.0.1:3000/api/users/u101/profile...\n",
   );
   const res2 = await makeRequest({
     hostname: "127.0.0.1",
-    port: 4000,
+    port: 3000,
     path: "/api/users/u101/profile",
     method: "GET",
   });

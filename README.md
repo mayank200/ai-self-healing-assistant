@@ -45,7 +45,7 @@ ai-self-healing-assistant/
 ├── app1-demo-backend/                   # Application 1: Demo Backend Express API
 │   ├── src/
 │   │   ├── app.js                       # Express app setup & error handling middleware
-│   │   ├── server.js                    # Server listener entry point (Port 4000)
+│   │   ├── server.js                    # Server listener entry point (Port 3000)
 │   │   ├── logger.js                    # Winston logger streaming JSON errors to file
 │   │   ├── data/                        # Mock data stores (users.json, products.json)
 │   │   ├── routes/                      # Domain API routes (users, orders, products)
@@ -88,7 +88,7 @@ ai-self-healing-assistant/
 
 ### 1. User Profile API (`GET /api/users/:id/profile`)
 
-- **Initial Request**: `GET http://localhost:4000/api/users/u101/profile`
+- **Initial Request**: `GET http://localhost:3000/api/users/u101/profile`
 - **Bug Scenario**: User `u101` has `preferences: null` in database JSON. The code attempts `user.preferences.displaySettings.theme.toUpperCase()`, throwing `TypeError: Cannot read properties of undefined (reading 'theme')`.
 - **Healed Response**: Returns `200 OK` with full user profile JSON:
   ```json
@@ -107,13 +107,13 @@ ai-self-healing-assistant/
 
 ### 2. Order Total Calculation API (`POST /api/orders/calculate`)
 
-- **Initial Request**: `POST http://localhost:4000/api/orders/calculate` with `{ discountRate: 1.0 }`
+- **Initial Request**: `POST http://localhost:3000/api/orders/calculate` with `{ discountRate: 1.0 }`
 - **Bug Scenario**: Code calculates divisor `(1.0 - discountRate)` resulting in division by zero.
 - **Healed Response**: Returns `200 OK` with `{ subtotal: 100, discount: 100, tax: 0, total: 0, currency: "USD" }`.
 
 ### 3. Product Catalog Search (`GET /api/products/search`)
 
-- **Initial Request**: `GET http://localhost:4000/api/products/search?tag=electronics`
+- **Initial Request**: `GET http://localhost:3000/api/products/search?tag=electronics`
 - **Bug Scenario**: Product `p202` has unquoted raw metadata JSON string, causing `JSON.parse` to throw `SyntaxError`.
 - **Healed Response**: Returns `200 OK` with product search array.
 
@@ -148,7 +148,7 @@ _(This installs dependencies for both `app1-demo-backend` and `app2-self-healing
    npm run start:app1
    ```
 
-   _Server starts at `http://localhost:4000`._
+   _Server starts at `http://localhost:3000`._
 
 2. **Terminal 2: Start Application 2 (Self-Healing Assistant)**:
 
@@ -160,16 +160,18 @@ _(This installs dependencies for both `app1-demo-backend` and `app2-self-healing
 
 3. **Trigger Bug & Observe Healing**:
    Open a browser or run cURL/Postman:
+
    ```bash
-   curl http://localhost:4000/api/users/u101/profile
+   curl http://localhost:3000/api/users/u101/profile
    ```
 
    - Terminal 1 outputs HTTP 500 error & appends to `error.log`.
    - Terminal 2 detects the error log, extracts stack trace, prompts AI, patches `src/services/userService.js`, creates git branch `fix/self-heal-user-service-...`, commits changes, and raises Pull Request!
+
 4. **Re-Test Endpoint**:
    Run the cURL command again:
    ```bash
-   curl http://localhost:4000/api/users/u101/profile
+   curl http://localhost:3000/api/users/u101/profile
    ```
    _Returns `200 OK` with valid user profile JSON!_
 

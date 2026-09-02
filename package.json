@@ -7,7 +7,8 @@
     "start:app1": "npm --prefix app1-demo-backend start",
     "start:app2": "npm --prefix app2-self-healing-assistant start",
     "install:all": "npm install --prefix app1-demo-backend && npm install --prefix app2-self-healing-assistant",
-    "test:demo": "node scripts/demo-runner.js"
+    "test:demo": "node scripts/demo-runner.js",
+    "screencast:demo": "node scripts/screencast-demo.js"
   },
   "keywords": [
     "ai",

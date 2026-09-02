@@ -44,7 +44,7 @@ REQUIRED JSON FIELDS:
     try {
       const ai = new GoogleGenAI({ apiKey: config.geminiApiKey });
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-2.0-flash',
         contents: prompt,
         config: {
           responseMimeType: 'application/json'

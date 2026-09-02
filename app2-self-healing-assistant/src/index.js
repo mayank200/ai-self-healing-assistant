@@ -55,7 +55,9 @@ startLogWatcher(config.targetLogFile, async (logLine) => {
     const gitResult = await commitCodeFix(
       config.targetAppRoot,
       errorInfo.filePath,
-      aiResult.prTitle
+      aiResult.prTitle,
+      'fix/self-heal',
+      !config.simulatePr
     );
     console.log(chalk.green(`   Branch Created: ${gitResult.branchName}`));
     console.log(chalk.gray(`   Commit SHA    : ${gitResult.commitSha}`));
